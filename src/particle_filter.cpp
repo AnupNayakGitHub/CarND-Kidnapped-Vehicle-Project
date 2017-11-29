@@ -44,7 +44,7 @@ void ParticleFilter::init(double x, double y, double theta, double std[]) {
         particles.push_back(p);
         //TODO: not initialized weights vector yet.
 
-        cout << "Measurements : "<< p.id << ", " << p.x << ", " << p.y << ", " << p.theta << endl;
+        //cout << "Measurements : "<< p.id << ", " << p.x << ", " << p.y << ", " << p.theta << endl;
     }
 
     is_initialized = true;
@@ -99,7 +99,6 @@ void ParticleFilter::dataAssociation(std::vector<LandmarkObs> predicted, std::ve
             }
         }
         observed_lm.id = min_id;
-        //assert(observed_lm.id != 0);
     }
     //for(const auto& observation: observations){
     //    cout << "Observation : " << observation.id << ", " << observation.x << ", " << observation.y << endl;
@@ -160,10 +159,6 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
             }
 
             Map::single_landmark_s fixed_lm = map_landmarks.landmark_list[global_observation.id - 1];
-            //asserted to make sure the assumption for indexing is correct!
-            //if(fixed_lm.id_i != global_observation.id) {
-            //    cout << "Fixed landmark id " << fixed_lm.id_i << " Global Observation Id " << global_observation.id << endl;
-            //}
             assert(fixed_lm.id_i == global_observation.id);
             double dx_sq = pow(fixed_lm.x_f - global_observation.x,2);
             double dy_sq = pow(fixed_lm.y_f - global_observation.y,2);
@@ -185,13 +180,13 @@ void ParticleFilter::resample() {
         if(particle.weight > best_particle.weight)
             best_particle = particle;
     }
-    if (best_particle.weight == 0) {
-        cout << "Best particle " << best_particle.weight << " " << best_particle.x << " " << best_particle.y << " " << best_particle.theta << endl;
-        for(auto& particle : particles) {
-            particle.weight = 1;
-        }
-        return;
-    }
+    //if (best_particle.weight == 0) {
+    //    cout << "Best particle " << best_particle.weight << " " << best_particle.x << " " << best_particle.y << " " << best_particle.theta << endl;
+    //    for(auto& particle : particles) {
+    //        particle.weight = 1;
+    //    }
+    //    return;
+    //}
 
     double weight_offset(best_particle.weight * 2);
     //int index = rand()%num_particles;
