@@ -25,8 +25,8 @@ void ParticleFilter::init(double x, double y, double theta, double std[]) {
 	//   x, y, theta and their uncertainties from GPS) and all weights to 1. 
 	// Add random Gaussian noise to each particle.
 	// NOTE: Consult particle_filter.h for more information about this method (and others in this file).
-    //Set the number of particles to 1024
-    num_particles = 1024;
+    //Set the number of particles to a reasonable number
+    num_particles = 64;
 
 
     default_random_engine gen;
@@ -118,6 +118,10 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
 	//   3.33
 	//   http://planning.cs.uiuc.edu/node99.html
 
+    //Initial calculationa that does't chnage
+    const double x_var = std_landmark[0]*std_landmark[0];
+    const double y_var = std_landmark[1]*std_landmark[1];
+    const double normalizer = 2.0*M_PI*std_landmark[0]*std_landmark[1];
     for (auto& particle : particles) {
         //cout << "Particle " << particle.id << " " << particle.x << " " << particle.y << " " << particle.theta << endl;
         //Rotate and translate observations
@@ -147,9 +151,9 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
         dataAssociation(global_qualified_lms, global_observations);
 
         //get the probability
-        double x_var = std_landmark[0]*std_landmark[0];
-        double y_var = std_landmark[1]*std_landmark[1];
-        double normalizer = 2.0*M_PI*std_landmark[0]*std_landmark[1];
+        //double x_var = std_landmark[0]*std_landmark[0];
+        //double y_var = std_landmark[1]*std_landmark[1];
+        //double normalizer = 2.0*M_PI*std_landmark[0]*std_landmark[1];
 
         particle.weight = 1;
         for(auto& global_observation : global_observations){
